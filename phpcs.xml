@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<ruleset name="matomo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
+
+    <description>Matomo Core Coding Standard</description>
+
+    <arg name="extensions" value="php" />
+
+    <file>core</file>
+    <file>plugins</file>
+    <file>tests/PHPUnit</file>
+
+    <exclude-pattern>tests/PHPUnit/proxy/*</exclude-pattern>
+    <exclude-pattern>tests/PHPUnit/Unit/Config/test_files/*</exclude-pattern>
+    <exclude-pattern>tests/javascript/*</exclude-pattern>
+
+    <!-- exclude all plugins included as submodule as long as they might not fully follow this CS -->
+    <exclude-pattern>plugins/(AnonymousPiwikUsageMeasurement|Bandwidth|CustomAlerts|CustomVariables|DeviceDetectorCache|LogViewer|LoginLdap|MarketingCampaignsReporting|Provider|QueuedTracking|SecurityInfo|TagManager|TasksTimetable|TrackingSpamPrevention|TreemapVisualization|VisitorGenerator)/*</exclude-pattern>
+
+    <rule ref="Matomo"></rule>
+
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="400"/>
+        </properties>
+        <exclude-pattern>tests/PHPUnit/*</exclude-pattern>
+        <exclude-pattern>plugins/*/tests/*</exclude-pattern>
+    </rule>
+
+    <rule ref="PSR1.Classes.ClassDeclaration.MultipleClasses">
+        <!-- Allow using multiple classes in one file for tests -->
+        <exclude-pattern>tests/PHPUnit/*</exclude-pattern>
+        <exclude-pattern>plugins/*/tests/*</exclude-pattern>
+    </rule>
+</ruleset>
