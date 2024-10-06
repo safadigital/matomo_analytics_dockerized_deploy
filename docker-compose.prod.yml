@@ -11,8 +11,8 @@ services:
       - ./nginx/nginx.conf:/var/lib/nginx-conf/localhost.ssl.conf.erb:ro
     environment:
       DOMAINS:  "localhost -> http://webapp:80"
-      STAGE:  "local"
-      FORCE_RENEW:  "false"
+      STAGE:  "production"
+      FORCE_RENEW:  "true"
     networks:
       - bridged
     depends_on:

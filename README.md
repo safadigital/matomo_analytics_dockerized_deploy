@@ -13,7 +13,14 @@ docker compose up
 ```
 
 ## для деплоя
-1. Создать файл docker-compsoe.prod.yml
+
+1. в файле docker-compsoe.prod.yml 
+- заменить “localhost” в localhost.ssl.conf.erb:ro на имя домена, например; example.com.ssl.conf.erb:ro
+2. Загрузить файлы на сервер
+3. Запустить docker compose production:
+```bash
+docker compose -f docker-compose.prod.yml up 
+```
 
 ## Matomo (formerly Piwik) - matomo.org
 
