@@ -8,11 +8,12 @@ services:
     restart: always
     volumes:
       - static-content:/static:ro
-      - ./nginx/nginx.conf:/var/lib/nginx-conf/localhost.ssl.conf.erb:ro
+      - ./nginx/nginx.conf:/var/lib/nginx-conf/3b1995ae1676.vps.myjino.ru.ssl.conf.erb:ro
     environment:
-      DOMAINS:  "localhost -> http://webapp:80"
-      STAGE:  "production"
-      FORCE_RENEW:  "true"
+      DOMAINS:  "3b1995ae1676.vps.myjino.ru -> http://webapp:80"
+      # DOMAINS:  "3b1995ae1676.vps.myjino.ru"
+      # STAGE:  "production"
+      # FORCE_RENEW:  "true"
     networks:
       - bridged
     depends_on:
@@ -21,11 +22,11 @@ services:
   db:
     image: mariadb:10.11
     command: --max-allowed-packet=64MB
-    # restart: always
+    restart: always
     volumes:
       - db:/var/lib/mysql:Z
     environment:
-      - MYSQL_ROOT_PASSWORD=password123*
+      - MYSQL_ROOT_PASSWORD=nihon3bfG2LEq7L2dfX
       - MARIADB_AUTO_UPGRADE=1
       - MARIADB_DISABLE_UPGRADE_BACKUP=1
     networks:
@@ -33,7 +34,7 @@ services:
 
   webapp:
     image: matomo
-    # restart: always
+    restart: always
     volumes:
       - matomo:/var/www/html:z
     environment:
