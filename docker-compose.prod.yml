@@ -1,24 +1,5 @@
-version:  "3.2"
+version: "3.9"
 services:
-  https-portal:
-    image:  steveltn/https-portal:1
-    ports:
-      - "80:80"
-      - "443:443"
-    restart: always
-    volumes:
-      - static-content:/static:ro
-      - ./nginx/nginx.conf:/var/lib/nginx-conf/3b1995ae1676.vps.myjino.ru.ssl.conf.erb:ro
-    environment:
-      DOMAINS:  "3b1995ae1676.vps.myjino.ru -> http://webapp:80"
-      # DOMAINS:  "3b1995ae1676.vps.myjino.ru"
-      # STAGE:  "production"
-      # FORCE_RENEW:  "true"
-    networks:
-      - bridged
-    depends_on:
-      - "webapp"
-    
   db:
     image: mariadb:10.11
     command: --max-allowed-packet=64MB
@@ -26,7 +7,7 @@ services:
     volumes:
       - db:/var/lib/mysql:Z
     environment:
-      - MYSQL_ROOT_PASSWORD=nihon3bfG2LEq7L2dfX
+      - MYSQL_ROOT_PASSWORD=theHon3fG5q7Ld9Fq2
       - MARIADB_AUTO_UPGRADE=1
       - MARIADB_DISABLE_UPGRADE_BACKUP=1
     networks:
@@ -43,6 +24,20 @@ services:
       - "8080:80"
     networks:
       - bridged
+
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx/prod/nginx.conf:/etc/nginx/conf.d/default.conf
+      - /etc/letsencrypt/:/etc/letsencrypt/
+    ports:
+      - "443:443"
+      - "80:80"
+    depends_on:
+      - webapp
+    networks:
+      - bridged
+
 volumes:
   db:
   matomo:
@@ -50,3 +45,59 @@ volumes:
 
 networks:
   bridged:
+
+
+
+
+# version:  "3.2"
+# services:
+#   https-portal:
+#     image:  steveltn/https-portal:1
+#     ports:
+#       - "80:80"
+#       - "443:443"
+#     restart: always
+#     volumes:
+#       - static-content:/static:ro
+#       # - ./nginx/nginx.conf:/var/lib/nginx-conf/3b1995ae1676.vps.myjino.ru.ssl.conf.erb:ro
+#     environment:
+#       # DOMAINS:  "3b1995ae1676.vps.myjino.ru -> http://webapp:80"
+#       DOMAINS:  "3b1995ae1676.vps.myjino.ru"
+#       STAGE:  "production"
+#       FORCE_RENEW:  "true"
+#     networks:
+#       - bridged
+#     depends_on:
+#       - "webapp"
+    
+#   db:
+#     image: mariadb:10.11
+#     command: --max-allowed-packet=64MB
+#     restart: always
+#     volumes:
+#       - db:/var/lib/mysql:Z
+#     environment:
+#       - MYSQL_ROOT_PASSWORD=nihon3bfG2LEq7L2dfX
+#       - MARIADB_AUTO_UPGRADE=1
+#       - MARIADB_DISABLE_UPGRADE_BACKUP=1
+#     networks:
+#       - bridged
+
+#   webapp:
+#     image: matomo
+#     restart: always
+#     volumes:
+#       - matomo:/var/www/html:z
+#     environment:
+#       - MATOMO_DATABASE_HOST=db
+#     ports:
+#       - "8080:80"
+#     networks:
+#       - bridged
+# volumes:
+#   db:
+#   matomo:
+#   static-content:
+
+# networks:
+#   bridged:

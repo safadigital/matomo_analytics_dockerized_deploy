@@ -1,26 +1,46 @@
 # Matomo analytics deploy with docker compose 
 
-The article
-https://medium.com/@manishgupta.ait/deploy-your-app-with-https-enabled-using-lets-encrypt-docker-docker-compose-bf2fdc981406 
-
-Можно использовать этот образ для деплоя SSL сертификата
-https://hub.docker.com/r/steveltn/https-portal/
-
-поднять приложение на локальной машине:
+поднять приложение на локальной машине c самоподписным сертификатом:
 
 ```bash
-docker compose up
+sudo ./run_dev.sh
 ```
 
-## для деплоя
+- либо так: 
+```bash 
+openssl req -x509 -nodes -newkey rsa:2048 -keyout key.pem -out cert.pem -sha256 -days 365 \
+    -subj "/C=GB/ST=London/L=London/O=Safadigital/OU=IT Department/CN=localhost"
 
-1. в файле docker-compsoe.prod.yml 
-- заменить “localhost” в localhost.ssl.conf.erb:ro на имя домена, например; example.com.ssl.conf.erb:ro
-2. Загрузить файлы на сервер
-3. Запустить docker compose production:
+sudo docker compose up
+```
+
+## для деплоя на VPS Ubuntu
+- должен быть установлен docker и docker compose 
+1. установить certbot
+https://www.digitalocean.com/community/tutorials/how-to-use-certbot-standalone-mode-to-retrieve-let-s-encrypt-ssl-certificates-on-ubuntu-16-04 
+
 ```bash
-docker compose -f docker-compose.prod.yml up 
+sudo add-apt-repository ppa:certbot/certbot 
+
+sudo apt-get update 
+
+sudo apt-get install certbot
+# выдать сертифика lets encrypt для домена 3b1995ae1676.vps.myjino.ru
+sudo certbot certonly --standalone -d 3b1995ae1676.vps.myjino.ru
 ```
+2. Запустить проект:
+```bash
+sudo docker compose -f docker-compose.prod,yml up -d
+```
+
+3. Остановить проект:
+```bash
+sudo docker compose -f docker-compose.prod,yml down
+```
+
+
+
+
 
 ## Matomo (formerly Piwik) - matomo.org
 
